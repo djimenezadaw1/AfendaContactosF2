@@ -24,12 +24,22 @@ import agenda.modelo.*;
  */
 public class AgendaIO {
 
-	public static void importar(AgendaContactos agenda) {
+	public static int importar(AgendaContactos agenda) {
+		int errores = 0;
 		String[] contactos = obtenerLineasDatos();
-		for(int i=0;i<contactos.length;i++) {
-			Contacto nuevo = parsearLinea(contactos[i]);
-			agenda.añadirContacto(nuevo);
+		try {
+			for(int i=0;i<contactos.length;i++) {
+				Contacto nuevo = parsearLinea(contactos[i]);
+				agenda.añadirContacto(nuevo);
+			}
 		}
+		catch(NullPointerException e) {
+			errores += 1;
+		}
+		catch(NumberFormatException o) {
+			errores += 1;
+		}
+		return errores;
 	}
 	
 public static void exportarPersonales(AgendaContactos agenda,String ruta) {
@@ -53,51 +63,49 @@ public static void exportarPersonales(AgendaContactos agenda,String ruta) {
 	 * @return Contacto 
 	 */
 	private static Contacto parsearLinea(String linea) {
-		try {
-			String[] datos = linea.split(",");
-			String tipo = datos[0].trim();
-			String nombre = datos[1].trim();
-			String apellidos = datos[2].trim();
-			String tel = datos[3].trim();
-			String email = datos[4].trim();
-			if(Integer.parseInt(tipo) == 1) {
-				String empresa = datos[5].trim();
-				Contacto prof = new Profesional(nombre, apellidos, tel, email, empresa);
-				return prof;
+		String[] datos = linea.split(",");
+		String tipo = datos[0].trim();
+		String nombre = datos[1].trim();
+		String apellidos = datos[2].trim();
+		String tel = datos[3].trim();
+		String email = datos[4].trim();
+		if(Integer.parseInt(tipo) == 1) {
+			String empresa = datos[5].trim();
+			Contacto prof = new Profesional(nombre, apellidos, tel, email, empresa);
+			return prof;
+		}
+		if(Integer.parseInt(tipo) == 2) {
+			String fecha = datos[5].trim();
+			String relacion = datos[6].trim();
+			Relacion rel = null;
+			if(relacion.equalsIgnoreCase("PADRE")) {
+				rel = Relacion.PADRE;
 			}
-			if(Integer.parseInt(tipo) == 2) {
-				String fecha = datos[5].trim();
-				String relacion = datos[6].trim();
-				Relacion rel = null;
-				if(relacion.equalsIgnoreCase("PADRE")) {
-					rel = Relacion.PADRE;
-				}
-				if(relacion.equalsIgnoreCase("MADRE")) {
-					rel = Relacion.MADRE;
-				}
-				if(relacion.equalsIgnoreCase("AMIGOS")) {
-					rel = Relacion.AMIGOS;
-				}
-				if(relacion.equalsIgnoreCase("PAREJA")) {
-					rel = Relacion.PAREJA;
-				}
-				if(relacion.equalsIgnoreCase("HIJO")) {
-					rel = Relacion.HIJO;
-				}
-				if(relacion.equalsIgnoreCase("HIJA")) {
-					rel = Relacion.HIJA;
-				}
-				
-				Contacto pers = new Personal(nombre, apellidos, tel, email, fecha, rel);
-				return pers;
+			if(relacion.equalsIgnoreCase("MADRE")) {
+				rel = Relacion.MADRE;
 			}
+			if(relacion.equalsIgnoreCase("AMIGOS")) {
+				rel = Relacion.AMIGOS;
+			}
+			if(relacion.equalsIgnoreCase("PAREJA")) {
+				rel = Relacion.PAREJA;
+			}
+			if(relacion.equalsIgnoreCase("HIJO")) {
+				rel = Relacion.HIJO;
+			}
+			if(relacion.equalsIgnoreCase("HIJA")) {
+				rel = Relacion.HIJA;
+			}
+			
+			
+			
+			if(rel == null) {
+				throw new NullPointerException();
+			}
+			Contacto pers = new Personal(nombre, apellidos, tel, email, fecha, rel);
+			return pers;
 		}
-		catch(NullPointerException e) {
-			System.out.println("La relación introducida no existe");
-		}
-		catch(NumberFormatException o) {
-			System.out.println("La fecha introducida es erronea");
-		}
+		
 		
 		return null;
 	}
@@ -130,7 +138,7 @@ public static void exportarPersonales(AgendaContactos agenda,String ruta) {
 				"  1,  roberto , casas maura , 666777888 ,  rocasasma@gmail.com ,  strato banca ",
 				" 2, daniel , martin martin , 678901234 ,  damrtinmartin@gmail.com , 15/07/1980, amigos",
 				"  2, pablo , martin abradelo , 667788899 ,  martinabra@gmail.com , 31/01/2010, amigos",
-				"  2, susana , santaolalla bilbao , 676767676 ,  ssantaolalla@gmail.com , 17/03/1998, amigos",
+				"  2, susana , santaolalla bilbao , 676767676 ,  ssantaolalla@gmail.com , 17/03/199i, amigos",
 				"  2, adur ,  martin merino ,  611112113 , adurmartinme@gmail.com ,  14/02/2000, primos" };
 
 	}

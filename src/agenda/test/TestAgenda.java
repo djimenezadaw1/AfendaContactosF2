@@ -1,4 +1,8 @@
 package agenda.test;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +20,7 @@ public class TestAgenda {
 
 	public static void main(String[] args) {
 		AgendaContactos agenda = new AgendaContactos();
+
 		AgendaIO.importar(agenda);
 		System.out.println(agenda);
 		separador();
@@ -36,7 +41,7 @@ public class TestAgenda {
 		personalesOrdenadosPorFecha(agenda, 'w');
 		separador();
 
-		personalesPorRelacion(agenda);
+		AgendaIO.exportarPersonales(agenda, "personales-relacion.txt");
 		separador();
 
 	}
@@ -78,15 +83,12 @@ public class TestAgenda {
 
 	}
 
-	private static void personalesPorRelacion(AgendaContactos agenda) {
-		Map<Relacion, List<String>> map = agenda.personalesPorRelacion();
-		map.forEach((key, value) -> System.out.println(key + "\n\t" + value));
-	}
-
+	
 	private static void separador() {
 		System.out.println(
 				"------------------------------------------------------------");
 
 	}
 
+	
 }

@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Map;
 
 import agenda.modelo.*;
  
@@ -32,20 +34,7 @@ public class AgendaIO {
 		}
 	}
 	
-public static void exportarPersonales(AgendaContactos agenda,String ruta) {
 
-	System.out.println(ruta);
-	PrintWriter fsalida = null;
-	try {
-		fsalida = new PrintWriter(new BufferedWriter(new FileWriter(ruta)));
-		fsalida.println(agenda.personalesPorRelacion());
-	} catch (IOException e) {
-		System.out.println("Error al crear " + ruta);
-	} finally {
-		fsalida.close();
-	}
-	
-}
 	/**
 	 * De una linea crea un objeto dependiendo de que tipo de contacto sea.
 	 * Los datos vienen separados por comas y tienen espacios al principio y al final.
@@ -102,6 +91,47 @@ public static void exportarPersonales(AgendaContactos agenda,String ruta) {
 		return null;
 	}
 
+	public static void exportarPersonales(AgendaContactos agenda,String ruta) {
+
+		System.out.println(ruta);
+		PrintWriter fsalida = null;
+		try {
+			System.out.println("Dentro del try");
+			fsalida = new PrintWriter(new BufferedWriter(new FileWriter(ruta)));
+			fsalida.println(esportarBonito(agenda, ruta));
+	
+			
+		} catch (IOException e) {
+			
+			System.out.println("Error al crear " + ruta);
+		} finally {
+			System.out.println("Dentro del finally");
+			fsalida.close();
+		}
+		
+	}
+	private static String esportarBonito(AgendaContactos agenda,String ruta) {
+		Map<Relacion, List<String>> map = agenda.personalesPorRelacion();
+		String resul ="";
+		boolean metido = true;
+		
+		for(Relacion clave: map.keySet()) {
+			resul += clave + "\n\t [" ;
+			metido = false;
+			for(String contenido: map.get(clave)) {
+				if(!metido) {
+					resul += contenido;
+					metido = true;
+				}
+				else
+					resul += ", " + contenido;
+
+			}
+			resul += "]\n";
+		}
+		
+		return resul;
+	}
 	/**
 	 * 
 	 * @return un array de String con todas las líneas de información de todos
@@ -131,7 +161,7 @@ public static void exportarPersonales(AgendaContactos agenda,String ruta) {
 				" 2, daniel , martin martin , 678901234 ,  damrtinmartin@gmail.com , 15/07/1980, amigos",
 				"  2, pablo , martin abradelo , 667788899 ,  martinabra@gmail.com , 31/01/2010, amigos",
 				"  2, susana , santaolalla bilbao , 676767676 ,  ssantaolalla@gmail.com , 17/03/1998, amigos",
-				"  2, adur ,  martin merino ,  611112113 , adurmartinme@gmail.com ,  14/02/2000, primos" };
+				"  2, adur ,  martin merino ,  611112113 , adurmartinme@gmail.com ,  14/02/2000, amigos" };
 
 	}
 

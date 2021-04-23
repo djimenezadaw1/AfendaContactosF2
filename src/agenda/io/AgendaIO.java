@@ -29,18 +29,11 @@ public class AgendaIO {
 	public static int importar(AgendaContactos agenda) {
 		int errores = 0;
 		String[] contactos = obtenerLineasDatos();
-		try {
 			for(int i=0;i<contactos.length;i++) {
 				Contacto nuevo = parsearLinea(contactos[i]);
 				agenda.añadirContacto(nuevo);
 			}
-		}
-		catch(NullPointerException e) {
-			errores += 1;
-		}
-		catch(NumberFormatException o) {
-			errores += 1;
-		}
+			
 		return errores;
 	}
 	
@@ -86,11 +79,6 @@ public class AgendaIO {
 				rel = Relacion.HIJA;
 			}
 			
-			
-			
-			if(rel == null) {
-				throw new NullPointerException();
-			}
 			Contacto pers = new Personal(nombre, apellidos, tel, email, fecha, rel);
 			return pers;
 		}
@@ -105,7 +93,7 @@ public class AgendaIO {
 		PrintWriter fsalida = null;
 		try {
 			fsalida = new PrintWriter(new BufferedWriter(new FileWriter(ruta)));
-			fsalida.println(esportarBonito(agenda, ruta));
+			fsalida.println(exportarBonito(agenda, ruta));
 			System.out.println("Exportados personales agrupados por relación");
 			
 		} catch (IOException e) {
@@ -116,7 +104,7 @@ public class AgendaIO {
 		}
 		
 	}
-	private static String esportarBonito(AgendaContactos agenda,String ruta) {
+	private static String exportarBonito(AgendaContactos agenda,String ruta) {
 		Map<Relacion, List<String>> map = agenda.personalesPorRelacion();
 		String resul ="";
 		boolean metido = true;

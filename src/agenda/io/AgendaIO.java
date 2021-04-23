@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
+import java.io.File;
+import java.util.Scanner;
 
 import agenda.modelo.*;
  
@@ -31,13 +33,12 @@ public class AgendaIO {
 	public static int importar(AgendaContactos agenda) {
 
         int errores = 0;
-        BufferedReader entrada = null;
+        Scanner sc = null;
         try {
-            entrada = new BufferedReader(new FileReader("agenda.csv"));
-            String linea = entrada.readLine();
-            while (linea != null) {
+            sc = new Scanner(new File("agenda.csv"));
+            while (sc.hasNextLine()) {
                 try {
-                    Contacto nuevo = parsearLinea(linea);
+                    Contacto nuevo = parsearLinea(sc.nextLine());
                     agenda.añadirContacto(nuevo);
                 }
 
@@ -51,18 +52,9 @@ public class AgendaIO {
             }
         } catch (IOException e) {
             System.out.println("Error al leer agenda.csv");
+            errores ++;
         } finally {
-            if (entrada != null) {
-                try {
-                    entrada.close();
-                } catch (NullPointerException e) {
-                    System.out.println(e.getMessage());
-                    errores++;
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                    errores++;
-                }
-            }
+            sc.close();
         }
 
         return errores;

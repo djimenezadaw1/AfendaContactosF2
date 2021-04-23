@@ -21,7 +21,12 @@ public class TestAgenda {
 	public static void main(String[] args) {
 		AgendaContactos agenda = new AgendaContactos();
 
+
 		AgendaIO.importar(agenda);
+
+		int errores = AgendaIO.importar(agenda);
+		System.out.println(errores);
+
 		System.out.println(agenda);
 		separador();
 

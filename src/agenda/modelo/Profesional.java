@@ -1,4 +1,4 @@
-package ut7.agenda.modelo;
+package agenda.modelo;
 
 /**
  * Clase Profesional, que hereda de Contacto añadiendo el nombre de la empresa

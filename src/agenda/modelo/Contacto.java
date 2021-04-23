@@ -1,4 +1,4 @@
-package ut7.agenda.modelo;
+package agenda.modelo;
 
 /**
  * Clase Contacto, representa a un contacto de la agenda. 

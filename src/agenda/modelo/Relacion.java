@@ -1,4 +1,4 @@
-package ut7.agenda.modelo;
+package agenda.modelo;
 /**
  * Clase Relacion 
  * @author Alex Calderón, Irune Arratibel, Daniel Jiménez

@@ -1,10 +1,10 @@
-package ut7.agenda.test;
+package agenda.test;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import ut7.agenda.io.AgendaIO;
-import ut7.agenda.modelo.*;
+import agenda.io.AgendaIO;
+import agenda.modelo.*;
 /**
  * Clase TestAgenda
  * 

@@ -53,42 +53,52 @@ public static void exportarPersonales(AgendaContactos agenda,String ruta) {
 	 * @return Contacto 
 	 */
 	private static Contacto parsearLinea(String linea) {
-		String[] datos = linea.split(",");
-		String tipo = datos[0].trim();
-		String nombre = datos[1].trim();
-		String apellidos = datos[2].trim();
-		String tel = datos[3].trim();
-		String email = datos[4].trim();
-		if(Integer.parseInt(tipo) == 1) {
-			String empresa = datos[5].trim();
-			Contacto prof = new Profesional(nombre, apellidos, tel, email, empresa);
-			return prof;
+		try {
+			String[] datos = linea.split(",");
+			String tipo = datos[0].trim();
+			String nombre = datos[1].trim();
+			String apellidos = datos[2].trim();
+			String tel = datos[3].trim();
+			String email = datos[4].trim();
+			if(Integer.parseInt(tipo) == 1) {
+				String empresa = datos[5].trim();
+				Contacto prof = new Profesional(nombre, apellidos, tel, email, empresa);
+				return prof;
+			}
+			if(Integer.parseInt(tipo) == 2) {
+				String fecha = datos[5].trim();
+				String relacion = datos[6].trim();
+				Relacion rel = null;
+				if(relacion.equalsIgnoreCase("PADRE")) {
+					rel = Relacion.PADRE;
+				}
+				if(relacion.equalsIgnoreCase("MADRE")) {
+					rel = Relacion.MADRE;
+				}
+				if(relacion.equalsIgnoreCase("AMIGOS")) {
+					rel = Relacion.AMIGOS;
+				}
+				if(relacion.equalsIgnoreCase("PAREJA")) {
+					rel = Relacion.PAREJA;
+				}
+				if(relacion.equalsIgnoreCase("HIJO")) {
+					rel = Relacion.HIJO;
+				}
+				if(relacion.equalsIgnoreCase("HIJA")) {
+					rel = Relacion.HIJA;
+				}
+				
+				Contacto pers = new Personal(nombre, apellidos, tel, email, fecha, rel);
+				return pers;
+			}
 		}
-		if(Integer.parseInt(tipo) == 2) {
-			String fecha = datos[5].trim();
-			String relacion = datos[6].trim();
-			Relacion rel = Relacion.PADRE;
-			if(relacion.equalsIgnoreCase("PADRE")) {
-				rel = Relacion.PADRE;
-			}
-			if(relacion.equalsIgnoreCase("MADRE")) {
-				rel = Relacion.MADRE;
-			}
-			if(relacion.equalsIgnoreCase("AMIGOS")) {
-				rel = Relacion.AMIGOS;
-			}
-			if(relacion.equalsIgnoreCase("PAREJA")) {
-				rel = Relacion.PAREJA;
-			}
-			if(relacion.equalsIgnoreCase("HIJO")) {
-				rel = Relacion.HIJO;
-			}
-			if(relacion.equalsIgnoreCase("HIJA")) {
-				rel = Relacion.HIJA;
-			}
-			Contacto pers = new Personal(nombre, apellidos, tel, email, fecha, rel);
-			return pers;
+		catch(NullPointerException e) {
+			System.out.println("La relación introducida no existe");
 		}
+		catch(NumberFormatException o) {
+			System.out.println("La fecha introducida es erronea");
+		}
+		
 		return null;
 	}
 
@@ -116,12 +126,12 @@ public static void exportarPersonales(AgendaContactos agenda,String ruta) {
 				"1, javier, marin lancho, 666666666, jruizlanchoe@gmail.com, bbva",
 				"1,juan maria, garcía oliva, 699898111, jmgarcioliva@gmail.com, conway motor ",
 				"2, Berta ,  andia solano ,  621123345 , bandiasol@gmail.com ,  12/12/1999 ,  HIJA",
-				"2, Ignacio ,  Anto roth ,  688912799 , iantoroth@gmail.com ,  11/11/1969 , padre",
+				"2, Ignacio ,  Anto roth ,  688912799 , iantoroth@gmail.com ,  11/11/1960 , padre",
 				"  1,  roberto , casas maura , 666777888 ,  rocasasma@gmail.com ,  strato banca ",
 				" 2, daniel , martin martin , 678901234 ,  damrtinmartin@gmail.com , 15/07/1980, amigos",
 				"  2, pablo , martin abradelo , 667788899 ,  martinabra@gmail.com , 31/01/2010, amigos",
 				"  2, susana , santaolalla bilbao , 676767676 ,  ssantaolalla@gmail.com , 17/03/1998, amigos",
-				"  2, adur ,  martin merino ,  611112113 , adurmartinme@gmail.com ,  14/02/2003 , amigos" };
+				"  2, adur ,  martin merino ,  611112113 , adurmartinme@gmail.com ,  14/02/2000, primos" };
 
 	}
 

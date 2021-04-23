@@ -1,5 +1,10 @@
 package agenda.io; 
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import agenda.modelo.*;
  
 /**
@@ -27,6 +32,20 @@ public class AgendaIO {
 		}
 	}
 	
+public static void exportarPersonales(AgendaContactos agenda,String ruta) {
+
+	System.out.println(ruta);
+	PrintWriter fsalida = null;
+	try {
+		fsalida = new PrintWriter(new BufferedWriter(new FileWriter(ruta)));
+		fsalida.println(agenda.personalesPorRelacion());
+	} catch (IOException e) {
+		System.out.println("Error al crear " + ruta);
+	} finally {
+		fsalida.close();
+	}
+	
+}
 	/**
 	 * De una linea crea un objeto dependiendo de que tipo de contacto sea.
 	 * Los datos vienen separados por comas y tienen espacios al principio y al final.

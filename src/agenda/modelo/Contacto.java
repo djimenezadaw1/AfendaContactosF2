@@ -152,7 +152,7 @@ public abstract class Contacto implements Comparable<Contacto>{
 	 if ( obj == null) {
 		 return false;
 	 }
-	 if(this.getClass() != obj.getClass()) {
+	 if(!(obj instanceof Contacto)) {
 		 return false;
 	 }
 	 Contacto p = (Contacto) obj;

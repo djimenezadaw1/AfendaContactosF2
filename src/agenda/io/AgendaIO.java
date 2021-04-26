@@ -1,8 +1,6 @@
 package agenda.io; 
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,8 +21,8 @@ import agenda.modelo.*;
  */
 
 /**
- * A partir de los datos obtenidos por el método obtenerLineasDatos,
- * cargamos todos los contactos en el parametro agenda.
+ * A partir de los datos obtenidos por el fichero "agenda.csv",
+ * cargamos todos los contactos en el parametro agenda y contabilizamos los errores.
  * @param AgendaContactos agenda (donde meteremos los contactos)
  * 
  */
@@ -62,7 +60,7 @@ public class AgendaIO {
 	
 
 	/**
-	 * De una linea crea un objeto dependiendo de que tipo de contacto sea.
+	 * De una linea crea un objeto dependiendo de que tipo de contacto sea y capturamos los errores.
 	 * Los datos vienen separados por comas y tienen espacios al principio y al final.
 	 * @param String linea (la linea con los datos)
 	 * @return Contacto 
@@ -116,14 +114,18 @@ public class AgendaIO {
 		
 		return null;
 	}
-
+	/**
+	 * Escribe los contactos personales, agrupados por relacion, en un fichero llamado "personales-relacion".
+	 * @param agenda
+	 * @param ruta
+	 */
 	public static void exportarPersonales(AgendaContactos agenda,String ruta) {
 
 		
 		PrintWriter fsalida = null;
 		try {
 			fsalida = new PrintWriter(new BufferedWriter(new FileWriter(ruta)));
-			fsalida.println(exportarBonito(agenda, ruta));
+			fsalida.println(escribirBonito(agenda, ruta));
 			System.out.println("Exportados personales agrupados por relación");
 			
 		} catch (IOException e) {
@@ -134,7 +136,13 @@ public class AgendaIO {
 		}
 		
 	}
-	private static String exportarBonito(AgendaContactos agenda,String ruta) {
+	/**
+	 * Metodo para formatear el texto que introduciremos en el fichero "personales por relacion".
+	 * @param agenda
+	 * @param ruta
+	 * @return String
+	 */
+	private static String escribirBonito(AgendaContactos agenda,String ruta) {
 		Map<Relacion, List<String>> map = agenda.personalesPorRelacion();
 		String resul ="";
 		boolean metido = true;
